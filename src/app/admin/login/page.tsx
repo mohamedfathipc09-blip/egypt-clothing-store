@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Lock, Mail, AlertCircle, Loader2, ShieldCheck } from "lucide-react";
 import { signInAdminAction } from "./actions";
 
+export const dynamic = "force-dynamic";
+
 function AdminLoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -118,10 +120,12 @@ function AdminLoginFormContent() {
   );
 }
 
-export default function LoginForm() {
+export default function AdminLoginPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>}>
-      <AdminLoginFormContent />
-    </Suspense>
+    <div dir="rtl" className="min-h-screen bg-gray-950 flex flex-col justify-center items-center px-4 py-12 text-gray-100">
+      <Suspense fallback={<div className="flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>}>
+        <AdminLoginFormContent />
+      </Suspense>
+    </div>
   );
 }
