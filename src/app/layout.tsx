@@ -25,4 +25,4 @@ export default function RootLayout({
       <body className="font-sans min-h-screen flex flex-col">{children}</body>
     </html>
   );
-}
+} 
