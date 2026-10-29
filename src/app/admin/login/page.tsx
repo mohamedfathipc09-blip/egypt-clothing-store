@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Lock, Mail, AlertCircle, Loader2, ShieldCheck } from "lucide-react";
 import { signInAdminAction } from "./actions";
 
-function AdminLoginForm() {
+function AdminLoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/admin/dashboard";
@@ -118,12 +118,10 @@ function AdminLoginForm() {
   );
 }
 
-export default function AdminLoginPage() {
+export default function LoginForm() {
   return (
-    <div dir="rtl" className="min-h-screen bg-gray-950 flex flex-col justify-center items-center px-4 py-12 text-gray-100">
-      <Suspense fallback={<div className="flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>}>
-        <AdminLoginForm />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div className="flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>}>
+      <AdminLoginFormContent />
+    </Suspense>
   );
 }
