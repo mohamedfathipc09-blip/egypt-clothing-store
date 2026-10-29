@@ -354,52 +354,56 @@ export async function createProductAction(
 
     let finalImageUrl =
       String(formData.get("image_url") ?? "").trim() || null;
-    const imageFile = formData.get("image_file") as File | null;
+    const imageFiles = formData.getAll("image_files") as File[];
+    const uploadedImageUrls: string[] = [];
 
-    if (imageFile && typeof imageFile === "object" && imageFile.size > 0) {
-      if (!imageFile.type.startsWith("image/")) {
-        return {
-          success: false,
-          error: "الملف المرفوع يجب أن يكون صورة صالحة.",
-        };
+    if (imageFiles && imageFiles.length > 0) {
+      for (const file of imageFiles) {
+        if (typeof file === "object" && file.size > 0) {
+          if (!file.type.startsWith("image/")) {
+            return {
+              success: false,
+              error: "جميع الملفات المرفوعة يجب أن تكون صوراً صالحة.",
+            };
+          }
+
+          const ext = (file.name.split(".").pop() || "jpg")
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, "");
+          const fileName = `prod_${Date.now()}_${Math.random()
+            .toString(36)
+            .substring(2, 8)}.${ext || "jpg"}`;
+
+          const arrayBuffer = await file.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+
+          const { error: uploadError } = await service.storage
+            .from("product-images")
+            .upload(fileName, buffer, {
+              contentType: file.type || "image/jpeg",
+              upsert: true,
+            });
+
+          if (uploadError) {
+            return {
+              success: false,
+              error: `فشل رفع صورة المنتج إلى التخزين السحابي: ${uploadError.message}`,
+            };
+          }
+
+          const { data: publicUrlData } = service.storage
+            .from("product-images")
+            .getPublicUrl(fileName);
+
+          if (publicUrlData?.publicUrl) {
+            uploadedImageUrls.push(publicUrlData.publicUrl);
+          }
+        }
       }
 
-      const ext = (imageFile.name.split(".").pop() || "jpg")
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "");
-      const fileName = `prod_${Date.now()}_${Math.random()
-        .toString(36)
-        .substring(2, 8)}.${ext || "jpg"}`;
-
-      const arrayBuffer = await imageFile.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
-      const { error: uploadError } = await service.storage
-        .from("product-images")
-        .upload(fileName, buffer, {
-          contentType: imageFile.type || "image/jpeg",
-          upsert: true,
-        });
-
-      if (uploadError) {
-        return {
-          success: false,
-          error: `فشل رفع صورة المنتج إلى التخزين السحابي: ${uploadError.message}`,
-        };
+      if (uploadedImageUrls.length > 0) {
+      finalImageUrl = uploadedImageUrls[0] || null;
       }
-
-      const { data: publicUrlData } = service.storage
-        .from("product-images")
-        .getPublicUrl(fileName);
-
-      if (!publicUrlData?.publicUrl) {
-        return {
-          success: false,
-          error: "تعذر استخراج الرابط العام للصورة بعد رفعها.",
-        };
-      }
-
-      finalImageUrl = publicUrlData.publicUrl;
     }
 
     const productCode = `PRD-${sku}`;
@@ -432,14 +436,18 @@ export async function createProductAction(
       };
     }
 
-    if (finalImageUrl) {
-      const { error: imgErr } = await service.from("product_images").insert({
+    if (uploadedImageUrls.length > 0) {
+      const imagesToInsert = uploadedImageUrls.map((url, index) => ({
         product_id: product.id,
-        image_url: finalImageUrl,
+        image_url: url,
         alt_text: title,
-        is_primary: true,
-        display_order: 0,
-      });
+        is_primary: index === 0,
+        display_order: index,
+      }));
+
+      const { error: imgErr } = await service
+        .from("product_images")
+        .insert(imagesToInsert);
 
       if (imgErr) {
         console.error("Warning: Failed inserting product_images:", imgErr.message);
