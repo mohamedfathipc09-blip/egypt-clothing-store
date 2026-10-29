@@ -17,6 +17,7 @@ import {
 import { ProductCard } from "@/components/store/ProductCard";
 import HeroSlider from "@/components/store/HeroSlider";
 
+
 export const dynamic = "force-dynamic";
 
 export default async function StoreHomePage() {
