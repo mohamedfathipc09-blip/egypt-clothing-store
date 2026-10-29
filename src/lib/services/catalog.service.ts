@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { unstable_noStore as noStore } from "next/cache";
 import type { StoreSettings } from "@/types/domain.types";
 
 export interface CatalogProductSummary {
@@ -43,15 +44,15 @@ export function isValidUuid(value: unknown): value is string {
 
 const DEFAULT_STORE_SETTINGS: StoreSettings = {
   id: 1,
-  store_name: "متجر الملابس الرسمي",
+  store_name: "ستايل زون",
   store_tagline: "أزياء عصرية بجودة مصرية فاخرة",
   logo_url: null,
   primary_color_rgb: "17 24 39",
   secondary_color_rgb: "75 85 99",
   accent_color_rgb: "180 83 9",
-  support_phone: "01000000000",
-  support_whatsapp: "201000000000",
-  support_email: "support@example.com",
+  support_phone: "01155882543",
+  support_whatsapp: "01155882543",
+  support_email: "mohamedfathi09@gmail.com",
   address_text: "القاهرة، جمهورية مصر العربية",
   free_shipping_threshold: null,
   return_window_days: 14,
@@ -75,6 +76,7 @@ export async function getStoreSettings(): Promise<
     policies: Record<string, unknown>;
   }
 > {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
   const { data } = await supabase
     .from("store_settings")
@@ -104,8 +106,7 @@ export async function getStoreSettings(): Promise<
       (data.secondary_color_rgb as string) ||
       DEFAULT_STORE_SETTINGS.secondary_color_rgb,
     accent_color_rgb:
-      (data.accent_color_rgb as string) ||
-      DEFAULT_STORE_SETTINGS.accent_color_rgb,
+      (data.accent_color_rgb as string) || DEFAULT_STORE_SETTINGS.accent_color_rgb,
     support_phone:
       (data.support_phone as string) || DEFAULT_STORE_SETTINGS.support_phone,
     support_whatsapp:
@@ -132,6 +133,7 @@ export async function getStoreSettings(): Promise<
 }
 
 export async function getPublishedCategories() {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
   const { data, error } = await supabase
     .from("categories")
@@ -151,6 +153,7 @@ export async function getPublishedCategories() {
 }
 
 export async function getActiveAttributes() {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
   const [sizesRes, colorsRes] = await Promise.all([
     supabase
@@ -287,6 +290,7 @@ const PRODUCT_SUMMARY_SELECT = `
 `;
 
 export async function getHomePageSections() {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
 
   const [latestRes, featuredRes, bestSellingRes, offersRes] = await Promise.all([
@@ -336,6 +340,7 @@ export async function getHomePageSections() {
 }
 
 export async function getFilteredCatalogProducts(params: ProductFilterParams) {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
   const page = Math.max(1, params.page ?? 1);
   const pageSize = params.pageSize ?? 12;
@@ -438,6 +443,7 @@ export async function getFilteredCatalogProducts(params: ProductFilterParams) {
 }
 
 export async function getPublishedProductBySlug(slug: string) {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
   const cleanSlug = decodeURIComponent(String(slug ?? "").trim());
   if (!cleanSlug) return null;
@@ -617,6 +623,7 @@ export async function getPublishedProductBySlug(slug: string) {
 }
 
 export async function getActiveBanners() {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
   const { data, error } = await supabase
     .from("banners")
@@ -646,8 +653,8 @@ export async function getActiveBanners() {
   return data;
 }
 
-// ✅ الدالة الجديدة لجلب التقييمات
 export async function getProductReviews(productId: string) {
+  noStore(); // ✅ منع الكاش
   const supabase = createServerSupabaseClient();
   const { data, error } = await supabase
     .from("reviews")
