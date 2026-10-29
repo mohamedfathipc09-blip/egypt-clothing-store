@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-brand-primary: 17 24 39;
+  --color-brand-secondary: 75 85 99;
+  --color-brand-accent: 180 83 9;
+}
+
+html {
+  direction: rtl;
+  text-align: right;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-gray-900 antialiased selection:bg-amber-600 selection:text-white;
+}
