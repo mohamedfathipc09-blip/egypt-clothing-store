@@ -103,98 +103,97 @@ export default function ProductsManagerClient({
       )}
 
       {/* نموذج إضافة قسم سريع */}
-      <form onSubmit={handleCreateCategory} className="bg-white border border-gray-200 rounded-2xl p-5 flex flex-col sm:flex-row items-end gap-4 shadow-sm">
+      <form onSubmit={handleCreateCategory} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-end gap-4 shadow-sm">
         <div className="w-full sm:flex-1">
-          <label className="flex items-center gap-1.5 text-xs font-bold text-gray-700 mb-1">
+          <label className="flex items-center gap-1.5 text-xs font-bold text-gray-700 mb-2">
             <FolderPlus className="w-4 h-4 text-amber-600" />
             <span>اسم القسم الجديد</span>
           </label>
-          <input name="name" required placeholder="ملابس شتوية" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+          <input name="name" required placeholder="ملابس شتوية" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
         </div>
         <div className="w-full sm:flex-1">
-          <label className="block text-xs font-bold text-gray-700 mb-1">الرابط المختصر (Slug)</label>
-          <input name="slug" required placeholder="winter-wear" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+          <label className="block text-xs font-bold text-gray-700 mb-2">الرابط المختصر (Slug)</label>
+          <input name="slug" required placeholder="winter-wear" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
         </div>
-        <button type="submit" disabled={loading} className="px-5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-bold transition whitespace-nowrap border border-gray-300">
+        <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold transition whitespace-nowrap shadow-sm">
           إضافة قسم
         </button>
       </form>
 
       {/* نموذج إضافة منتج جديد */}
-      <form onSubmit={handleCreateProduct} className="bg-white border border-gray-200 rounded-2xl p-6 space-y-5 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+      <form onSubmit={handleCreateProduct} className="bg-white border border-gray-200 rounded-2xl p-6 space-y-6 shadow-sm">
+        <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-4">
           <Plus className="w-5 h-5 text-amber-600" />
           <span>إضافة منتج جديد مع رصيد المخزون الافتتاحي</span>
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* الحقول الأساسية - شبكة منسقة */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          {/* الصف الأول */}
+          <div className="md:col-span-2">
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">اسم المنتج *</label>
+            <input name="title" required placeholder="مثال: هودي قطن مصري ثقيل" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">الرابط المختصر (Slug) *</label>
+            <input name="slug" required placeholder="heavy-cotton-hoodie" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
+          </div>
+
+          {/* الصف الثاني */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">اسم المنتج *</label>
-            <input name="title" required placeholder="مثال: هودي قطن مصري ثقيل" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">سعر البيع (ج.م) *</label>
+            <input name="base_price" type="number" step="0.01" required placeholder="650" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">الرابط المختصر (Slug) *</label>
-            <input name="slug" required placeholder="heavy-cotton-hoodie" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">سعر التكلفة (ج.م)</label>
+            <input name="cost_price" type="number" step="0.01" placeholder="350" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">سعر البيع (ج.م) *</label>
-            <input name="base_price" type="number" step="0.01" required placeholder="650" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">الكمية المتاحة *</label>
+            <input name="stock_quantity" type="number" min={0} defaultValue={15} required className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">سعر التكلفة (ج.م)</label>
-            <input name="cost_price" type="number" step="0.01" placeholder="350" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">القسم</label>
-            <select name="category_id" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none">
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">القسم</label>
+            <select name="category_id" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors">
               <option value="">-- بدون قسم --</option>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
+
+          {/* الصف الثالث */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">المقاس *</label>
-            <input name="size" required placeholder="L" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">المقاس *</label>
+            <input name="size" required placeholder="L" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">اللون *</label>
-            <input name="color" required placeholder="أسود" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">اللون *</label>
+            <input name="color" required placeholder="أسود" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
           </div>
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">كود المخزن (SKU) *</label>
-            <input name="sku" required placeholder="HD-BLK-L" className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">الكمية المتاحة *</label>
-            <input name="stock_quantity" type="number" min={0} defaultValue={15} required className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+          <div className="md:col-span-2">
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">كود المخزن (SKU) *</label>
+            <input name="sku" required placeholder="HD-BLK-L" className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+        {/* الوصف والصور */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">وصف المنتج (اختياري)</label>
-            <input name="description" placeholder="خامة قطن مصري 100% معالجة ضد الانكماش..." className="w-full rounded-xl bg-white border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none" />
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">وصف المنتج (اختياري)</label>
+            <textarea name="description" rows={3} placeholder="خامة قطن مصري 100% معالجة ضد الانكماش..." className="w-full rounded-xl bg-gray-50 border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:bg-white focus:border-amber-500 focus:outline-none transition-colors resize-none" />
           </div>
 
-          {/* رفع صور متعددة من الجهاز */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">صور المنتج (اختياري - يمكنك اختيار أكثر من صورة)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1.5">صور المنتج (يمكنك اختيار أكثر من صورة)</label>
             <div className="flex flex-col gap-3">
-              <label className="flex items-center justify-center w-full h-12 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-xl appearance-none cursor-pointer hover:border-amber-500 focus:outline-none">
-                <UploadCloud className="w-5 h-5 text-gray-500 mr-2" />
-                <span className="text-sm text-gray-600">اختر صور من جهازك</span>
-                <input
-                  type="file"
-                  name="image_files"
-                  accept="image/*"
-                  multiple // ✅ تفعيل اختيار أكثر من صورة
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
+              <label className="flex items-center justify-center w-full h-20 px-4 transition bg-gray-50 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer hover:bg-amber-50 hover:border-amber-400 focus:outline-none">
+                <UploadCloud className="w-6 h-6 text-gray-400 mr-2" />
+                <span className="text-sm font-medium text-gray-600">اضغط هنا لاختيار صور من جهازك</span>
+                <input type="file" name="image_files" accept="image/*" multiple onChange={handleImageChange} className="hidden" />
               </label>
               {imagePreviews.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {imagePreviews.map((src, index) => (
-                    <div key={index} className="relative w-12 h-12 rounded-lg overflow-hidden border border-gray-200">
+                    <div key={index} className="relative w-14 h-14 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
                       <img src={src} alt={`Preview ${index}`} className="w-full h-full object-cover" />
                     </div>
                   ))}
@@ -204,8 +203,8 @@ export default function ProductsManagerClient({
           </div>
         </div>
 
-        <div className="flex justify-end pt-2">
-          <button type="submit" disabled={loading} className="px-8 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-sm font-bold transition whitespace-nowrap shadow-sm">
+        <div className="flex justify-end pt-4 border-t border-gray-100">
+          <button type="submit" disabled={loading} className="px-10 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-sm font-bold transition shadow-sm">
             {loading ? "جاري الحفظ..." : "حفظ المنتج"}
           </button>
         </div>
@@ -213,7 +212,7 @@ export default function ProductsManagerClient({
 
       {/* قائمة المنتجات والمتغيرات وتعديل المخزون */}
       <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900">المنتجات المسجلة وإدارة المخزون اللحظي</h2>
+        <h2 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-4">المنتجات المسجلة وإدارة المخزون اللحظي</h2>
 
         <div className="space-y-6">
           {products.length === 0 ? (
@@ -221,10 +220,10 @@ export default function ProductsManagerClient({
           ) : (
             products.map((product) => (
               <div key={product.id} className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-4">
-                <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-gray-200 pb-3 gap-2">
                   <div>
                     <h3 className="font-bold text-gray-900 text-base">{product.title}</h3>
-                    <p className="text-xs text-gray-600">
+                    <p className="text-xs text-gray-600 font-medium">
                       سعر البيع: {Number(product.base_price).toLocaleString("ar-EG")} ج.م
                       {product.cost_price > 0 && ` | التكلفة: ${Number(product.cost_price).toLocaleString("ar-EG")} ج.م`}
                     </p>
@@ -236,14 +235,14 @@ export default function ProductsManagerClient({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {(product.product_variants ?? []).map((v: any) => (
-                    <div key={v.id} className="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-3.5 py-2.5">
-                      <div className="text-xs space-y-0.5">
+                    <div key={v.id} className="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-3 shadow-sm">
+                      <div className="text-xs space-y-1">
                         <p className="font-bold text-gray-800">المقاس: {v.size} | اللون: {v.color}</p>
                         <p className="text-gray-500 font-mono">SKU: {v.sku}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <input type="number" min={0} value={stockEdits[v.id] ?? v.stock_quantity} onChange={(e) => setStockEdits((prev) => ({ ...prev, [v.id]: parseInt(e.target.value || "0", 10) }))} className="w-20 rounded-lg bg-white border border-gray-300 px-2.5 py-1 text-center text-sm font-bold text-gray-900" />
-                        <button type="button" disabled={loading} onClick={() => handleUpdateStock(v.id, v.stock_quantity)} className="p-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-600 border border-amber-200 transition" title="حفظ الكمية">
+                        <input type="number" min={0} value={stockEdits[v.id] ?? v.stock_quantity} onChange={(e) => setStockEdits((prev) => ({ ...prev, [v.id]: parseInt(e.target.value || "0", 10) }))} className="w-20 rounded-lg bg-gray-50 border border-gray-300 px-2.5 py-1.5 text-center text-sm font-bold text-gray-900 focus:border-amber-500 focus:outline-none" />
+                        <button type="button" disabled={loading} onClick={() => handleUpdateStock(v.id, v.stock_quantity)} className="p-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-600 border border-amber-200 transition shadow-sm" title="حفظ الكمية">
                           <Save className="w-4 h-4" />
                         </button>
                       </div>
@@ -251,25 +250,25 @@ export default function ProductsManagerClient({
                   ))}
                 </div>
 
-                <form onSubmit={handleAddVariant} className="pt-2 border-t border-gray-200 flex flex-wrap items-end gap-2">
+                <form onSubmit={handleAddVariant} className="pt-3 border-t border-gray-200 flex flex-wrap items-end gap-3 bg-gray-100/50 p-3 rounded-xl">
                   <input type="hidden" name="product_id" value={product.id} />
                   <div>
                     <label className="block text-[11px] font-bold text-gray-600 mb-1">مقاس جديد</label>
-                    <input name="size" required placeholder="XL" className="w-20 rounded-lg bg-white border border-gray-300 px-2.5 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
+                    <input name="size" required placeholder="XL" className="w-20 rounded-lg bg-white border border-gray-300 px-3 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
                   </div>
                   <div>
                     <label className="block text-[11px] font-bold text-gray-600 mb-1">اللون</label>
-                    <input name="color" required placeholder="أبيض" className="w-24 rounded-lg bg-white border border-gray-300 px-2.5 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
+                    <input name="color" required placeholder="أبيض" className="w-24 rounded-lg bg-white border border-gray-300 px-3 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
                   </div>
                   <div>
                     <label className="block text-[11px] font-bold text-gray-600 mb-1">كود SKU</label>
-                    <input name="sku" required placeholder="HD-WHT-XL" className="w-28 rounded-lg bg-white border border-gray-300 px-2.5 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
+                    <input name="sku" required placeholder="HD-WHT-XL" className="w-28 rounded-lg bg-white border border-gray-300 px-3 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
                   </div>
                   <div>
                     <label className="block text-[11px] font-bold text-gray-600 mb-1">الكمية</label>
-                    <input name="stock_quantity" type="number" min={0} defaultValue={10} required className="w-20 rounded-lg bg-white border border-gray-300 px-2.5 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
+                    <input name="stock_quantity" type="number" min={0} defaultValue={10} required className="w-20 rounded-lg bg-white border border-gray-300 px-3 py-1.5 text-xs text-gray-900 focus:border-amber-500 focus:outline-none" />
                   </div>
-                  <button type="submit" disabled={loading} className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-xs font-bold text-gray-700 transition">
+                  <button type="submit" disabled={loading} className="px-4 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-xs font-bold text-white transition shadow-sm">
                     + إضافة مقاس
                   </button>
                 </form>
