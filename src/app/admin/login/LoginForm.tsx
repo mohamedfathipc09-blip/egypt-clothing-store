@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Lock, Mail, AlertCircle, Loader2, ShieldCheck } from "lucide-react";
 import { signInAdminAction } from "./actions";
 
-export default function LoginForm({ redirectTo }: { redirectTo: string }) {
+function AdminLoginFormContent() {
   const router = useRouter();
-  
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/admin/dashboard";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -113,5 +115,13 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
         </button>
       </form>
     </div>
+  );
+}
+
+export default function LoginForm() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>}>
+      <AdminLoginFormContent />
+    </Suspense>
   );
 }
