@@ -5,7 +5,8 @@ import { ProductCard } from "@/components/store/ProductCard";
 import ProductFilters from "@/components/store/ProductFilters";
 import ProductSort from "@/components/store/ProductSort";
 import { Filter, PackageX } from "lucide-react";
-export const dynamic = 'force-dynamic';
+
+// ✅ إجبار الصفحة على التحديث المستمر (مرة واحدة بس)
 export const dynamic = "force-dynamic";
 
 export default async function StoreProductsPage({
