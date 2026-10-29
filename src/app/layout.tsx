@@ -6,6 +6,9 @@ import "./globals.css";
 // If you want to use the Cairo font, add it as a local font in the `public/fonts` directory
 // and import it with `next/font/local` as described in the documentation.
 
+// ✅ السطر السحري اللي بيجبر المشروع كله يشتغل ديناميكياً (مش ثابت)
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "متجر الملابس الإلكتروني",
   description:
